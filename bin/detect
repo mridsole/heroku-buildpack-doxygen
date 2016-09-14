@@ -3,10 +3,12 @@
 
 BUILD_DIR=$1
 
+exit 0
+
 # this pack is valid for apps with Doxyfile in the root
-if [ -f ${BUILD_DIR}/Doxyfile ]; then
-    echo "Doxygen"
-    exit 0
-else
-    exit 1
-fi
+#if [ -f ${BUILD_DIR}/Doxyfile ]; then
+#    echo "Doxygen"
+#    exit 0
+#else
+#    exit 1
+#fi
