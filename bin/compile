@@ -49,7 +49,7 @@ fi
 DOXYGEN=$(readlink -f ${DOXYGEN})
 
 cd ${BUILD_DIR}
-mkdir html
+mkdir -p html
 
 echo "-----> Generating documentation with doxygen ${DOXYGEN_VERSION}"
 ( cat Doxyfile ; echo "PROJECT_NUMBER=${SOURCE_VERSION}" ) | ${DOXYGEN} - | indent
