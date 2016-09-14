@@ -49,6 +49,7 @@ fi
 DOXYGEN=$(readlink -f ${DOXYGEN})
 
 cd ${BUILD_DIR}
+mkdir html
 
 echo "-----> Generating documentation with doxygen ${DOXYGEN_VERSION}"
 ( cat Doxyfile ; echo "PROJECT_NUMBER=${SOURCE_VERSION}" ) | ${DOXYGEN} - | indent
@@ -61,7 +62,7 @@ if [[ ! -f "Procfile" ]]; then
         OUT_DIR=.
     fi
 
-    echo "web: vendor/bin/heroku-php-apache2 ${OUT_DIR}/html/" > Procfile
+    echo "web: vendor/bin/heroku-php-apache2 html/" > Procfile
 
     echo "[${BUILD_DIR}/Procfile]" | indent
     cat Procfile | indent
