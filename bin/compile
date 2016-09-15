@@ -49,20 +49,38 @@ fi
 DOXYGEN=$(readlink -f ${DOXYGEN})
 
 cd ${BUILD_DIR}
-mkdir -p html
 
-echo "-----> Generating documentation with doxygen ${DOXYGEN_VERSION}"
-( cat Doxyfile ; echo "PROJECT_NUMBER=${SOURCE_VERSION}" ) | ${DOXYGEN} - | indent
+# we have two doxygen projects: one Doxyfile in each MPLAB project directory
+# these need to be generated into two seperate folders in the root html folder
+DOXYFILE_ROBOT="rnpdts-robot/Doxyfile"
+DOXYFILE_COMMANDER="rnpdts-commander/Doxyfile"
+OUT_DIR=html
 
-echo "-----> Generating default configuration files (if needed)"
+mkdir html
+
+for dxfl in $DOXYFILE_COMMANDER
+do
+
+    echo "-----> Generating documentation with doxygen ${DOXYGEN_VERSION}"
+    ( cat $dxfl ; echo "PROJECT_NUMBER=${SOURCE_VERSION}" ) | ${DOXYGEN} - | indent
+
+    echo "-----> Generating default configuration files (if needed)"
+
+#    if cat $(dxfl) | grep -q "^OUTPUT_DIRECTORY"; then
+#        OUT_DIR=`cat $(dxfl) | grep "^OUTPUT_DIRECTORY" | grep -o "\".*\"" | tr -d \"`
+#    else
+#        OUT_DIR=.
+#    fi
+done
+
 if [[ ! -f "Procfile" ]]; then
-    if cat Doxyfile | grep -q "^OUTPUT_DIRECTORY"; then
-        OUT_DIR=`cat Doxyfile | grep "^OUTPUT_DIRECTORY" | grep -o "\".*\"" | tr -d \"`
-    else
-        OUT_DIR=.
-    fi
 
-    echo "web: vendor/bin/heroku-php-apache2 html/" > Procfile
+    for entry in ${OUT_DIR}/*
+    do
+        echo $entry
+    done
+
+    echo "web: vendor/bin/heroku-php-apache2 ${OUT_DIR}/" > Procfile
 
     echo "[${BUILD_DIR}/Procfile]" | indent
     cat Procfile | indent
@@ -74,3 +92,9 @@ if [[ ! -f "composer.json" ]]; then
     echo "[${BUILD_DIR}/composer.json]" | indent
     cat composer.json | indent
 fi
+
+echo "Generated files: "
+echo $(cat Procfile)
+echo $(cat composer.json)
+
+echo "Doxygen done!"
