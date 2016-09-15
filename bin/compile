@@ -56,7 +56,7 @@ DOXYFILE_ROBOT="rnpdts-robot/Doxyfile"
 DOXYFILE_COMMANDER="rnpdts-commander/Doxyfile"
 OUT_DIR=html
 
-mkdir html
+mkdir -p html
 
 for dxfl in $DOXYFILE_COMMANDER
 do
