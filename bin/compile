@@ -58,7 +58,7 @@ OUT_DIR=html
 
 mkdir -p html
 
-for dxfl in $DOXYFILE_COMMANDER
+for dxfl in $DOXYFILE_COMMANDER $DOXYFILE_ROBOT
 do
 
     echo "-----> Generating documentation with doxygen ${DOXYGEN_VERSION}"
